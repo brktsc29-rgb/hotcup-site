@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Hot Cup — a companion app for airline crew. Reads the monthly roster and helps crew use the time around it.">
+<title>Hot Cup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --bg: #E9EDF1;
+  --panel: #FCFDFE;
+  --ink: #0F1620;
+  --muted: #58677A;
+  --line: #D3DDE6;
+  --tea: #B04A16;
+  --tea-soft: #F2E2D8;
+  --ok: #2F6B4F;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10161D;
+    --panel: #18212B;
+    --ink: #E7EDF3;
+    --muted: #93A2B2;
+    --line: #2A3745;
+    --tea: #E0793C;
+    --tea-soft: #33241B;
+    --ok: #6FBF95;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10161D;
+  --panel: #18212B;
+  --ink: #E7EDF3;
+  --muted: #93A2B2;
+  --line: #2A3745;
+  --tea: #E0793C;
+  --tea-soft: #33241B;
+  --ok: #6FBF95;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 24px 96px; }
+
+/* ── Başlık ── */
+
+header { padding: 72px 0 44px; }
+
+.brand { display: flex; align-items: center; gap: 16px; margin-bottom: 34px; }
+.brand svg { flex: none; }
+.brand h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.brand h1 span { color: var(--tea); }
+
+.lede {
+  font-size: clamp(23px, 3.6vw, 31px);
+  line-height: 1.28;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+
+.sub { color: var(--muted); margin: 0; max-width: 56ch; }
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tea);
+  background: var(--tea-soft);
+  border-radius: 20px;
+  padding: 7px 14px;
+}
+.status i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--tea); display: block;
+}
+
+/* ── Bölümler ── */
+
+section { padding-top: 52px; }
+
+h2 {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+.items { display: flex; flex-direction: column; gap: 2px; }
+
+.item {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 22px;
+}
+.item h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.item p { margin: 0; color: var(--muted); font-size: 15.5px; }
+
+p.note { color: var(--muted); font-size: 15.5px; max-width: 62ch; }
+p.note + p.note { margin-top: 14px; }
+
+ul.plain {
+  margin: 0; padding: 0; list-style: none;
+  display: flex; flex-direction: column; gap: 12px;
+}
+ul.plain li {
+  display: flex; gap: 11px; align-items: flex-start;
+  color: var(--muted); font-size: 15.5px;
+}
+ul.plain svg { flex: none; margin-top: 5px; color: var(--ok); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--ink);
+  background: var(--tea-soft);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+footer {
+  margin-top: 64px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+}
+footer p { margin: 0 0 8px; }
+
+@media (max-width: 560px) {
+  header { padding-top: 48px; }
+  .wrap { padding: 0 18px 64px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <svg width="46" height="46" viewBox="0 0 52 52" fill="none" aria-hidden="true">
+        <path d="M12 22h20v14a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6V22Z" stroke="var(--tea)" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M10.5 19.5h23" stroke="var(--tea)" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M19 19.5v-2.2" stroke="var(--tea)" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M24 15c0-5 14-4 18 0.6" stroke="var(--tea)" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="44" cy="16.5" r="2.4" fill="var(--tea)"/>
+      </svg>
+      <h1>Hot<span>Cup</span></h1>
+    </div>
+
+    <p class="lede">A companion for airline crew — on duty and in between.</p>
+
+    <p class="sub">
+      Hot Cup reads a crew member's published monthly roster and helps them
+      use the time around it: the hours in a layover city, and the free days
+      at home. Built for pilots and cabin crew.
+    </p>
+
+    <span class="status"><i></i>In development · not yet published</span>
+  </header>
+
+  <section>
+    <h2>What it does</h2>
+    <div class="items">
+
+      <div class="item">
+        <h3>Reads the roster</h3>
+        <p>
+          The monthly roster becomes a calendar: duties, flight legs, layovers
+          and free days, shown with the airline's own codes rather than
+          re-interpreted. Fields the parser could not read confidently are
+          flagged for the crew member to confirm — never quietly assumed.
+        </p>
+      </div>
+
+      <div class="item">
+        <h3>Answers duty-limit questions</h3>
+        <p>
+          Crew describe their situation in plain language and get an answer
+          drawn from official aviation regulation documents, with the source
+          passages shown and a separate verification pass. It is a
+          decision-support tool; the final authority remains the official
+          sources and the operator.
+        </p>
+      </div>
+
+      <div class="item">
+        <h3>Suggests what to do with the time</h3>
+        <p>
+          For a layover, it works out the genuinely free hours — after
+          transfer, sleep and getting ready — and suggests places that fit,
+          with real travel times and a guaranteed time back at the hotel. For
+          the home base, it keeps a shared calendar of what is on in the city
+          that month.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Where the information comes from</h2>
+
+    <p class="note">
+      Every recommendation carries its source. Nothing is shown that cannot be
+      traced back to a page a person can open and check — if a source cannot
+      be named, the entry is not published at all.
+    </p>
+
+    <ul class="plain">
+      <li>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Google Maps Platform</strong> — places and real travel times around a layover hotel, shown live with attribution.</span>
+      </li>
+      <li>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Tripadvisor</strong> <em>(planned)</em> — ratings and things to do near the crew hotel, displayed with Tripadvisor attribution and bubble ratings and linking back to Tripadvisor. Fetched live rather than stored.</span>
+      </li>
+      <li>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Public event pages</strong> — venues, ticketing providers and municipal culture calendars, each entry linking to the page it came from.</span>
+      </li>
+      <li>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Official regulation documents</strong> — used only for duty-limit answers, with the relevant passage quoted.</span>
+      </li>
+    </ul>
+
+    <p class="note" style="margin-top: 22px;">
+      When something is not known, the app says so. An event with no announced
+      time shows <code>time not stated</code> rather than a plausible guess,
+      and a month that has not been checked yet is shown as unchecked rather
+      than empty.
+    </p>
+  </section>
+
+  <section>
+    <h2>Privacy</h2>
+
+    <p class="note">
+      Crew rosters contain personal data that has nothing to do with planning
+      an afternoon. Personnel numbers, passport and document numbers,
+      colleagues' names, vaccination and medical dates and hotel phone numbers
+      are stripped <em>before</em> the roster is parsed — if the cleaning step
+      fails, the upload is refused rather than stored.
+    </p>
+
+    <p class="note">
+      Roster images are processed in memory and not kept. Profile photos stay
+      on the device. Raw roster text never appears in logs.
+    </p>
+  </section>
+
+  <footer>
+    <p>Hot Cup is an independent project and is not affiliated with any airline.</p>
+    <p>
+      Duty-limit answers are decision support only. Final responsibility rests
+      with the official sources and the competent authorities.
+    </p>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Hot Cup — a companion app for airline crew. Reads the monthly roster and helps crew use the time around it.">
+<meta name="apple-itunes-app" content="app-id=6813928488">
 <title>Hot Cup</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,8 +102,32 @@ header { padding: 72px 0 44px; }
 }
 .status i {
   width: 6px; height: 6px; border-radius: 50%;
-  background: var(--tea); display: block;
+  background: var(--ok); display: block;
 }
+.status.live { color: var(--ok); background: transparent; border: 1px solid var(--line); }
+
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 28px; }
+.cta .status { margin-top: 0; }
+
+.store {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 10px 18px 10px 14px;
+  line-height: 1.15;
+  transition: opacity .15s ease;
+}
+.store:hover { opacity: .88; }
+.store:focus-visible { outline: 2px solid var(--tea); outline-offset: 3px; }
+.store svg { flex: none; }
+.store small { display: block; font-size: 11px; font-weight: 500; letter-spacing: .01em; }
+.store strong { display: block; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+
+footer a { color: var(--tea); }
 
 /* ── Bölümler ── */
 
@@ -195,7 +220,13 @@ footer p { margin: 0 0 8px; }
       at home. Built for pilots and cabin crew.
     </p>
 
-    <span class="status"><i></i>In development · not yet published</span>
+    <div class="cta">
+      <a class="store" href="https://apps.apple.com/tr/app/hotcup-crew-assistant/id6813928488" rel="noopener">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.47.83-.72 0-1.82-.81-2.99-.79-1.54.02-2.96.9-3.75 2.27-1.6 2.78-.41 6.89 1.15 9.14.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.99.72 1.24-.02 2.02-1.12 2.77-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66ZM14.1 5.85c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.76-.96 2.8 1.02.08 2.06-.51 2.69-1.27Z"/></svg>
+        <span><small>Download on the</small><strong>App Store</strong></span>
+      </a>
+      <span class="status live"><i></i>Now available for iPhone</span>
+    </div>
   </header>
 
   <section>
@@ -291,6 +322,7 @@ footer p { margin: 0 0 8px; }
   </section>
 
   <footer>
+    <p><a href="https://apps.apple.com/tr/app/hotcup-crew-assistant/id6813928488" rel="noopener">Get Hot Cup on the App Store</a></p>
     <p>Hot Cup is an independent project and is not affiliated with any airline.</p>
     <p>
       Duty-limit answers are decision support only. Final responsibility rests
